@@ -106,6 +106,24 @@ namespace HRSolutionsCore.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet]
+        [Route("SubCategory")]
+        public IActionResult SubCategory()
+        {
+            try
+            {
+                var response = _masterBusiness.GetCategory();
+                if (response.Success)
+                {
+                    return Ok(response);
+                }
+                return BadRequest(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
         #endregion
     }
 }
