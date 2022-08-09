@@ -16,7 +16,6 @@ namespace HRSolutions.BusinessLayer
         {
             this._dataContext = dataContext;
         }
-
         #region Category
         public AddUpdateDeleteResponse AddCategory(MasterCategoryModel req)
         {
@@ -76,7 +75,6 @@ namespace HRSolutions.BusinessLayer
             }
             return new AddUpdateDeleteResponse { Data = "", Message = "Failed to update status", Success = true };
         }
-
         public AddUpdateDeleteResponse DeleteCategory(int id)
         {
             var catDetails = _dataContext.MstCategories.First(x=> x.Id == id); 
@@ -89,7 +87,6 @@ namespace HRSolutions.BusinessLayer
             return new AddUpdateDeleteResponse { Data = "", Message = "failed to remove category", Success = false };
         }
         #endregion
-
         #region SubCategory
         #endregion
         public AddUpdateDeleteResponse AddSubCategory(MasterSubCategoryModel req)
@@ -151,6 +148,8 @@ namespace HRSolutions.BusinessLayer
                 {
                     subCatDetails.Status = true;
                 }
+
+
                 _dataContext.MstSubCategories.Update(subCatDetails);
                 i = _dataContext.SaveChanges();
                 if (i > 0)
