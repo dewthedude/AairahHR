@@ -50,4 +50,18 @@ namespace HRSolutionsCore.RequestModel
                 .WithMessage("Category Id is required");
         }
     }
+    public class SubCategoryStatusModel
+    {
+        public int id { get; set; }
+    }
+    public class SubCategoryStatusModelValidator : AbstractValidator<SubCategoryStatusModel>
+    {
+        public SubCategoryStatusModelValidator()
+        {
+            RuleFor(x => x.id)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .WithMessage("subCategory id is required..!");
+        }
+    }
 }
