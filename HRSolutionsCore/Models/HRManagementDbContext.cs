@@ -16,6 +16,7 @@ namespace HRSolutionsCore.Models
         {
         }
 
+        public virtual DbSet<AdminRegistration> AdminRegistrations { get; set; } = null!;
         public virtual DbSet<MstCategory> MstCategories { get; set; } = null!;
         public virtual DbSet<MstSubCategory> MstSubCategories { get; set; } = null!;
         public virtual DbSet<MstSubSubCategory> MstSubSubCategories { get; set; } = null!;
@@ -31,6 +32,31 @@ namespace HRSolutionsCore.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<AdminRegistration>(entity =>
+            {
+                entity.ToTable("AdminRegistration");
+
+                entity.Property(e => e.AddedBy).HasMaxLength(40);
+
+                entity.Property(e => e.AddressLine1).HasMaxLength(200);
+
+                entity.Property(e => e.AddressLine2).HasMaxLength(200);
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Email).HasMaxLength(30);
+
+                entity.Property(e => e.Mobile).HasMaxLength(30);
+
+                entity.Property(e => e.Name).HasMaxLength(50);
+
+                entity.Property(e => e.Password).HasMaxLength(300);
+
+                entity.Property(e => e.Street).HasMaxLength(50);
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+            });
+
             modelBuilder.Entity<MstCategory>(entity =>
             {
                 entity.ToTable("mstCategory");
