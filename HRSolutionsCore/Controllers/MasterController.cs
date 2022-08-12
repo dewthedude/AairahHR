@@ -1,6 +1,7 @@
 ﻿using HRSolutions.BusinessLayer;
 using HRSolutionsCore.RequestModel;
 using HRSolutionsCore.ResponseModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -9,14 +10,17 @@ namespace HRSolutionsCore.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class MasterController : ControllerBase
     {
+
         public readonly MasterBusiness _masterBusiness;
         public MasterController(MasterBusiness masterBusiness)
         {
             _masterBusiness = masterBusiness;
         }
         #region CategoryMaster
+        
         //Add new category
         [HttpPost]
         [Route("Category")]
@@ -46,6 +50,7 @@ namespace HRSolutionsCore.Controllers
         }
         [HttpGet]
         [Route("Category")]
+      
         public IActionResult Category()
         {
             try
@@ -103,8 +108,6 @@ namespace HRSolutionsCore.Controllers
             }
         }
         #endregion
-
-
         #region SubCategoryMaster
 
         [HttpPost]

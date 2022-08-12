@@ -122,3 +122,9 @@ C:\MyCoreApp\AairahHR\HRSolutionsCore\obj\Debug\net6.0\refint\HRSolutionsCore.dl
 C:\MyCoreApp\AairahHR\HRSolutionsCore\obj\Debug\net6.0\HRSolutionsCore.pdb
 C:\MyCoreApp\AairahHR\HRSolutionsCore\obj\Debug\net6.0\HRSolutionsCore.genruntimeconfig.cache
 C:\MyCoreApp\AairahHR\HRSolutionsCore\obj\Debug\net6.0\ref\HRSolutionsCore.dll
+C:\MyCoreApp\AairahHR\HRSolutionsCore\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\MyCoreApp\AairahHR\HRSolutionsCore\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\MyCoreApp\AairahHR\HRSolutionsCore\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\MyCoreApp\AairahHR\HRSolutionsCore\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\MyCoreApp\AairahHR\HRSolutionsCore\bin\Debug\net6.0\Microsoft.Extensions.Identity.Core.dll
+C:\MyCoreApp\AairahHR\HRSolutionsCore\bin\Debug\net6.0\Microsoft.Extensions.Identity.Stores.dll
