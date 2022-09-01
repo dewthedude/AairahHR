@@ -9,7 +9,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-
 namespace HRSolutionsCore.BusinessLayer
 {
     public class TokenBusiness
@@ -17,44 +16,43 @@ namespace HRSolutionsCore.BusinessLayer
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
-
+        private readonly HRManagementDbContext _context;
         public TokenBusiness(
             UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            HRManagementDbContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
+            _context = context;
         }
-
-        public AddUpdateDeleteResponse login(AdminLoginReqModel request)
+        public AddUpdateDeleteResponse adminLogin(AdminLoginReqModel request)
         {
-            var user = new
+            //var user = new
+            //{
+            //    username = "AshuKhan",
+            //    password = "12345",
+            //    Role = "Admin",
+            //};
+            bool isUserExist = _context.AdminRegistrations.Any(x => x.Email == request.UserName || x.Mobile == request.UserName);
+            if (!isUserExist)
             {
-                username = "AshuKhan",
-                password = "12345",
-                Role = "Admin",
+                return new AddUpdateDeleteResponse { Data = "", Message = "Email or Mobile is not registered", Success = false };
+            }
+            var user = _context.AdminRegistrations.FirstOrDefault(x => x.Email == request.UserName && x.Password == request.Password || x.Mobile == request.UserName && x.Password == request.Password);
 
-            };
-            //var user = await _userManager.FindByNameAsync(model.Username);
-
-            //if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             if (user != null)
             {
                 //var userRoles = await _userManager.GetRolesAsync(user);
-
                 var authClaims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.username),
+                    new Claim(ClaimTypes.Name, user.Name),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
-
                 authClaims.Add(new Claim(ClaimTypes.Role, "Admin"));
-
-
-                var token =  GetToken(authClaims);
-
+                var token = GetToken(authClaims);
                 return new AddUpdateDeleteResponse
                 {
                     Message = "",
@@ -65,22 +63,19 @@ namespace HRSolutionsCore.BusinessLayer
                     },
                     Success = true
                 };
-
             }
-            return new AddUpdateDeleteResponse { Data = "", Message = "", Success = false };
+            return new AddUpdateDeleteResponse { Data = "", Message = "Invalid Password", Success = false };
         }
         private JwtSecurityToken GetToken(List<Claim> authClaims)
         {
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
-
             var token = new JwtSecurityToken(
                 issuer: _configuration["JWT:ValidIssuer"],
                 audience: _configuration["JWT:ValidAudience"],
-                expires: DateTime.Now.AddHours(3),
+                expires: DateTime.Now.AddMinutes(60),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                 );
-
             return token;
         }
     }
