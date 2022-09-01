@@ -1,6 +1,7 @@
 ﻿using HRSolutionsCore.ResponseModel;
 using HRSolutionsCore.Models;
 using HRSolutionsCore.RequestModel;
+using Microsoft.EntityFrameworkCore;
 
 namespace HRSolutions.BusinessLayer
 {
@@ -66,6 +67,7 @@ namespace HRSolutions.BusinessLayer
                 {
                     catDetails.Status = true;
                 }
+                catDetails.UpdateDate = DateTime.Now;
                 _dataContext.MstCategories.Update(catDetails);
                 i = _dataContext.SaveChanges();
                 if (i > 0)
@@ -77,12 +79,17 @@ namespace HRSolutions.BusinessLayer
         }
         public AddUpdateDeleteResponse DeleteCategory(int id)
         {
-            var catDetails = _dataContext.MstCategories.First(x=> x.Id == id); 
-            if(catDetails != null)
+            var catDetails = _dataContext.MstCategories.First(x => x.Id == id);
+            bool isUsed = _dataContext.MstSubCategories.Any(x => x.IdCategory == id);
+            if (isUsed)
             {
-                _dataContext.MstCategories.Remove(catDetails);  
-                _dataContext.SaveChanges(); 
-                return new AddUpdateDeleteResponse { Data=catDetails, Message="Category remove successfully", Success = true };
+                return new AddUpdateDeleteResponse { Data = "", Success = false, Message = catDetails.Name + " having a sub_categoyr name please remove it first " };
+            }
+            if (catDetails != null)
+            {
+                _dataContext.MstCategories.Remove(catDetails);
+                _dataContext.SaveChanges();
+                return new AddUpdateDeleteResponse { Data = catDetails, Message = "Category remove successfully", Success = true };
             }
             return new AddUpdateDeleteResponse { Data = "", Message = "failed to remove category", Success = false };
         }
@@ -115,7 +122,8 @@ namespace HRSolutions.BusinessLayer
         //getting list of all category
         public AddUpdateDeleteResponse GetSubCategory()
         {
-            var subCatDetails = _dataContext.MstSubCategories.ToList();
+            var subCatDetails = _dataContext.MstCategories.Include("MstSubCategory").ToList();
+
             if (subCatDetails.Count > 0)
             {
                 return new AddUpdateDeleteResponse { Message = "SubCategory found", Data = subCatDetails, Success = true };
@@ -148,13 +156,12 @@ namespace HRSolutions.BusinessLayer
                 {
                     subCatDetails.Status = true;
                 }
-
-
+                subCatDetails.UpdateDate = DateTime.Now;
                 _dataContext.MstSubCategories.Update(subCatDetails);
                 i = _dataContext.SaveChanges();
                 if (i > 0)
                 {
-                    return new AddUpdateDeleteResponse { Data = "", Message = "subCategory status updated successfully", Success = true };
+                    return new AddUpdateDeleteResponse { Data = "", Message = subCatDetails.Name + ": status updated successfully", Success = true };
                 }
             }
             return new AddUpdateDeleteResponse { Data = "", Message = "Failed to update status", Success = true };

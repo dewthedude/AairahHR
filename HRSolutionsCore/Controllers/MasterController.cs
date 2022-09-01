@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
+
 namespace HRSolutionsCore.Controllers
 {
     [Route("api/[controller]")]
@@ -20,7 +21,7 @@ namespace HRSolutionsCore.Controllers
             _masterBusiness = masterBusiness;
         }
         #region CategoryMaster
-        
+
         //Add new category
         [HttpPost]
         [Route("Category")]
@@ -50,7 +51,6 @@ namespace HRSolutionsCore.Controllers
         }
         [HttpGet]
         [Route("Category")]
-      
         public IActionResult Category()
         {
             try
@@ -89,6 +89,7 @@ namespace HRSolutionsCore.Controllers
         [Route("Category")]
         public IActionResult DeleteCategory(int id)
         {
+     
             try
             {
                 if (id == 0)
@@ -100,9 +101,9 @@ namespace HRSolutionsCore.Controllers
                 {
                     return Ok(response);
                 }
-                return BadRequest();
+                return BadRequest(response);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

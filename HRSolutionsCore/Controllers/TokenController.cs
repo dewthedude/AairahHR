@@ -1,6 +1,7 @@
 ﻿using HRSolutionsCore.BusinessLayer;
 using HRSolutionsCore.Models;
 using HRSolutionsCore.RequestModel;
+using HRSolutionsCore.ResponseModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -30,16 +31,31 @@ namespace HRSolutionsCore.Controllers
         }
 
         [HttpPost]
-        [Route("login")]
-        public IActionResult Login([FromBody] AdminLoginReqModel model)
+        [Route("adminLogin")]
+        public async Task<IActionResult> adminLogin([FromBody] AdminLoginReqModel model)
         {
-            var response =  _tokenBussiness.login(model); 
-            if(response.Success)
+            //Validating request body
+
+            var validator = new AdminLoginReqModelValidator();
+            var validationResult = await validator.ValidateAsync(model);
+            if (!validationResult.IsValid)
             {
-                return Ok(response.Data);
+                return BadRequest(new AddUpdateDeleteResponse { Message = validationResult.Errors[0].ErrorMessage });
+            }
+            var response = _tokenBussiness.adminLogin(model);
+            if (response.Success)
+            {
+                return Ok(response);
+            }
+            if (response.Message.Contains("not registered"))
+            {
+                return BadRequest(response.Message);
+            }
+            if (response.Message.Contains("Invalid"))
+            {
+                return BadRequest(response.Message);
             }
             return Unauthorized();
         }
-       
     }
 }

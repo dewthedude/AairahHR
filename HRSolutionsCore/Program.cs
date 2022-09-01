@@ -24,6 +24,20 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<HRManagementDbContext>()
     .AddDefaultTokenProviders();
 
+
+
+//Adding Cors for angular request 
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+    });
+});
+
+
+
 // Adding Authentication
 builder.Services.AddAuthentication(options =>
 {
@@ -95,6 +109,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(options =>
+{
+    options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+
+
+});
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
@@ -102,5 +122,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
 
 app.Run();
