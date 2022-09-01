@@ -9,7 +9,6 @@ namespace HRSolutions.BusinessLayer
     //{
     //    AddUpdateDeleteResponse AddCategory(MasterCategory req);
     //}
-
     public class MasterBusiness
     {
         private readonly HRManagementDbContext _dataContext;
