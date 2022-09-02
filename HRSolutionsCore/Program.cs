@@ -61,7 +61,6 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-
 //Adding swagger auth bearar
 builder.Services.AddSwaggerGen(c =>
 {
