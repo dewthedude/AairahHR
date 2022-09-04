@@ -3164,19 +3164,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Ahsan Khan\\.nuget\\packages\\": {}
+    "C:\\Users\\Ashu\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\MyCoreApp\\AairahHR\\HRSolutionsCore\\HRSolutionsCore.csproj",
+      "projectUniqueName": "C:\\Users\\Ashu\\Source\\Repos\\dewthedude\\AairahHR\\HRSolutionsCore\\HRSolutionsCore.csproj",
       "projectName": "HRSolutionsCore",
-      "projectPath": "C:\\MyCoreApp\\AairahHR\\HRSolutionsCore\\HRSolutionsCore.csproj",
-      "packagesPath": "C:\\Users\\Ahsan Khan\\.nuget\\packages\\",
-      "outputPath": "C:\\MyCoreApp\\AairahHR\\HRSolutionsCore\\obj\\",
+      "projectPath": "C:\\Users\\Ashu\\Source\\Repos\\dewthedude\\AairahHR\\HRSolutionsCore\\HRSolutionsCore.csproj",
+      "packagesPath": "C:\\Users\\Ashu\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Ashu\\Source\\Repos\\dewthedude\\AairahHR\\HRSolutionsCore\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Ahsan Khan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Ashu\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -3184,6 +3184,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

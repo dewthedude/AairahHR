@@ -14,7 +14,7 @@ namespace HRSolutionsCore.Controllers
     [Authorize]
     public class MasterController : ControllerBase
     {
-
+        //New Chages fffff
         public readonly MasterBusiness _masterBusiness;
         public MasterController(MasterBusiness masterBusiness)
         {
