@@ -6,12 +6,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-
 namespace HRSolutionsCore.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class MasterController : ControllerBase
     {
 
@@ -89,7 +88,6 @@ namespace HRSolutionsCore.Controllers
         [Route("Category")]
         public IActionResult DeleteCategory(int id)
         {
-     
             try
             {
                 if (id == 0)
@@ -109,8 +107,8 @@ namespace HRSolutionsCore.Controllers
             }
         }
         #endregion
-        #region SubCategoryMaster
 
+        #region SubCategoryMaster
         [HttpPost]
         [Route("SubCategory")]
         public async Task<IActionResult> SubCategory(MasterSubCategoryModel req)
@@ -174,6 +172,7 @@ namespace HRSolutionsCore.Controllers
         }
         [HttpPatch]
         [Route("ActivateSubCategory")]
+
         public async Task<IActionResult> ActivateSubCategory([FromBody] SubCategoryStatusModel req)
         {
             //Validating request body
@@ -189,6 +188,29 @@ namespace HRSolutionsCore.Controllers
                 return Ok(response);
             }
             return Ok();
+        }
+
+        [HttpDelete]
+        [Route("SubCategory")]
+        public IActionResult DeleteSubCategory(int id)
+        {
+            try
+            {
+                if (id == 0)
+                {
+                    return BadRequest("Id is required");
+                }
+                var response = _masterBusiness.DeleteSubCategory(id);
+                if (response.Success == true)
+                {
+                    return Ok(response);
+                }
+                return BadRequest(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         #endregion
     }

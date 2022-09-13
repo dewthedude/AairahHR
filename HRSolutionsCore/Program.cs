@@ -16,18 +16,13 @@ ConfigurationManager configuration = builder.Configuration;
 // Add services to the container.
 
 // For Entity Framework
-
 builder.Services.AddDbContext<HRManagementDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("Conn")));
-
 // For Identity
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<HRManagementDbContext>()
     .AddDefaultTokenProviders();
 
-
-
 //Adding Cors for angular request 
-
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
@@ -36,8 +31,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-
-
 // Adding Authentication
 builder.Services.AddAuthentication(options =>
 {
@@ -45,7 +38,6 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 })
-
 // Adding Jwt Bearer
 .AddJwtBearer(options =>
 {
@@ -111,16 +103,9 @@ if (app.Environment.IsDevelopment())
 app.UseCors(options =>
 {
     options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
-
-
 });
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
-
 app.Run();

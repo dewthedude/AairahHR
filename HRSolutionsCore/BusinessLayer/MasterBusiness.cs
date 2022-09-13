@@ -2,6 +2,7 @@
 using HRSolutionsCore.Models;
 using HRSolutionsCore.RequestModel;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 
 namespace HRSolutions.BusinessLayer
 {
@@ -29,6 +30,7 @@ namespace HRSolutions.BusinessLayer
             _mstCategory.AddBy = "Admin";
             _mstCategory.CreatedDate = DateTime.Now;
             _mstCategory.Status = false;
+           
             _mstCategory.Name = req.Name;
             _dataContext.MstCategories.Add(_mstCategory);
             i = _dataContext.SaveChanges();
@@ -95,13 +97,13 @@ namespace HRSolutions.BusinessLayer
         #endregion
         #region SubCategory
         #endregion
-        public AddUpdateDeleteResponse AddSubCategory(MasterSubCategoryModel req)
+        public ResponseModel<ErrorResponseModel> AddSubCategory(MasterSubCategoryModel req)
         {
             int i = 0;
             bool isExist = _dataContext.MstSubCategories.Any(x => x.Name == req.Name);
             if (isExist)
             {
-                return new AddUpdateDeleteResponse { Message = "SubCategory already exist", Success = false, Data = "" };
+                return new ErrorResponseModel { error = new ErrorModel { code = "400", message = "SubCategory already exist", innerError = "" } ;
             }
             MstSubCategory _mstSubCategory = new MstSubCategory();
             _mstSubCategory.AddBy = "Admin";
@@ -121,8 +123,21 @@ namespace HRSolutions.BusinessLayer
         //getting list of all category
         public AddUpdateDeleteResponse GetSubCategory()
         {
-            var subCatDetails = _dataContext.MstCategories.Include("MstSubCategory").ToList();
 
+
+            var subCatDetails = (from t1 in _dataContext.MstCategories
+                                 join t2 in _dataContext.MstSubCategories
+                                 on t1.Id equals t2.IdCategory
+                                 select new
+                                 {
+                                     id = t2.Id,
+                                     CatName = t1.Name,
+                                     SubCatName = t2.Name,
+                                     Status = t2.Status,
+                                     UpdateDate = t2.UpdateDate,
+                                     CreatedDate = t2.CreatedDate,
+                                     AddBy = t2.AddBy
+                                 }).ToList();
             if (subCatDetails.Count > 0)
             {
                 return new AddUpdateDeleteResponse { Message = "SubCategory found", Data = subCatDetails, Success = true };
@@ -140,6 +155,22 @@ namespace HRSolutions.BusinessLayer
             return new AddUpdateDeleteResponse { Message = "active categories not found", Data = activeCategories, Success = false };
         }
 
+        public AddUpdateDeleteResponse DeleteSubCategory(int id)
+        {
+            var catDetails = _dataContext.MstSubCategories.First(x => x.Id == id);
+            bool isUsed = _dataContext.MstSubSubCategories.Any(x => x.IdSubCategory == id);
+            if (isUsed)
+            {
+                return new AddUpdateDeleteResponse { Data = "", Success = false, Message = catDetails.Name + " having a sub_sub_categoyr name please remove it first " };
+            }
+            if (catDetails != null)
+            {
+                _dataContext.MstSubCategories.Remove(catDetails);
+                _dataContext.SaveChanges();
+                return new AddUpdateDeleteResponse { Data = catDetails, Message = "sub_Category remove successfully", Success = true };
+            }
+            return new AddUpdateDeleteResponse { Data = "", Message = "failed to remove sub_category", Success = false };
+        }
 
         public AddUpdateDeleteResponse ActivateSubCategory(SubCategoryStatusModel req)
         {

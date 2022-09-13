@@ -16,4 +16,8 @@
         public bool Success { get; set; }
         public dynamic? Data { get; set; }
     }
+    public class ResponseModel<T> where  T : class
+    {
+        public T Result { get; set; }
+    }
 }
