@@ -97,13 +97,13 @@ namespace HRSolutions.BusinessLayer
         #endregion
         #region SubCategory
         #endregion
-        public ResponseModel<ErrorResponseModel> AddSubCategory(MasterSubCategoryModel req)
+        public ResponseModel<AddUpdateDeleteResponse,ErrorResponseModel> AddSubCategory(MasterSubCategoryModel req)
         {
             int i = 0;
             bool isExist = _dataContext.MstSubCategories.Any(x => x.Name == req.Name);
             if (isExist)
             {
-                return new ErrorResponseModel { error = new ErrorModel { code = "400", message = "SubCategory already exist", innerError = "" } ;
+                return new ResponseModel<AddUpdateDeleteResponse, ErrorResponseModel> { Error = new ErrorResponseModel { error = new ErrorModel {code = "400", message = "Sub category already exist" } } };
             }
             MstSubCategory _mstSubCategory = new MstSubCategory();
             _mstSubCategory.AddBy = "Admin";
@@ -116,9 +116,11 @@ namespace HRSolutions.BusinessLayer
             i = _dataContext.SaveChanges();
             if (i > 0)
             {
-                return new AddUpdateDeleteResponse { Message = "SubCategory added successfully", Success = true, Data = "" };
+                return new ResponseModel<AddUpdateDeleteResponse, ErrorResponseModel> { Success = new AddUpdateDeleteResponse { Message = "SubCategory added successfully", Success = true, Data = "" } };
             }
-            return new AddUpdateDeleteResponse { Message = "Failed to insert Subcategory", Success = false, Data = "" };
+            return new ResponseModel<AddUpdateDeleteResponse, ErrorResponseModel> { Error = new ErrorResponseModel { error = new ErrorModel { code = "400", innerError = "", message = "SubCategory added successfully" } } };
+
+   
         }
         //getting list of all category
         public AddUpdateDeleteResponse GetSubCategory()

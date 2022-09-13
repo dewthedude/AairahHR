@@ -123,7 +123,7 @@ namespace HRSolutionsCore.Controllers
                     return BadRequest(new ErrorResponseModel { error = new ErrorModel { code = "400", message = "Validation error", innerError = validationResult.Errors.Select(z => z.ErrorMessage) } });
                 }
                 var response = _masterBusiness.AddSubCategory(req);
-                if (response.Success == true)
+                if (response.Success.Success == true)
                 {
                     return Ok(response);
                 }
