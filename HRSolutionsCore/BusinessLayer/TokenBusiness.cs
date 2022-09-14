@@ -28,7 +28,7 @@ namespace HRSolutionsCore.BusinessLayer
             _configuration = configuration;
             _context = context;
         }
-        public AddUpdateDeleteResponse adminLogin(AdminLoginReqModel request)
+        public addUpdateDeleteResponse adminLogin(AdminLoginReqModel request)
         {
             //var user = new
             //{
@@ -39,7 +39,7 @@ namespace HRSolutionsCore.BusinessLayer
             bool isUserExist = _context.AdminRegistrations.Any(x => x.Email == request.UserName || x.Mobile == request.UserName);
             if (!isUserExist)
             {
-                return new AddUpdateDeleteResponse { Data = "", Message = "Email or Mobile is not registered", Success = false };
+                return new addUpdateDeleteResponse { Data = "", Message = "Email or Mobile is not registered", Success = false };
             }
             var user = _context.AdminRegistrations.FirstOrDefault(x => x.Email == request.UserName && x.Password == request.Password || x.Mobile == request.UserName && x.Password == request.Password);
 
@@ -53,7 +53,7 @@ namespace HRSolutionsCore.BusinessLayer
                 };
                 authClaims.Add(new Claim(ClaimTypes.Role, "Admin"));
                 var token = GetToken(authClaims);
-                return new AddUpdateDeleteResponse
+                return new addUpdateDeleteResponse
                 {
                     Message = "",
                     Data = new
@@ -64,7 +64,7 @@ namespace HRSolutionsCore.BusinessLayer
                     Success = true
                 };
             }
-            return new AddUpdateDeleteResponse { Data = "", Message = "Invalid Password", Success = false };
+            return new addUpdateDeleteResponse { Data = "", Message = "Invalid Password", Success = false };
         }
         private JwtSecurityToken GetToken(List<Claim> authClaims)
         {

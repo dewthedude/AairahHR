@@ -1,19 +1,25 @@
 ﻿namespace HRSolutionsCore.ResponseModel
 {
-    public class ErrorResponseModel
+    public class errorResponseModel
     {
-        public ErrorModel? error { get; set; }
+        public errorModel? error { get; set; }
     }
-    public class ErrorModel
+    public class errorModel
     {
         public string? code { get; set; }
         public string? message { get; set; }
+        public bool Success { get; set; }
         public dynamic? innerError { get; set; }
     }
-    public class AddUpdateDeleteResponse
+    public class addUpdateDeleteResponse
     {
-        public string Message { get; set; } = string.Empty; 
+        public string Message { get; set; } = string.Empty;
         public bool Success { get; set; }
         public dynamic? Data { get; set; }
+    }
+    public class responseModel<T1, T2> where T1 : class where T2 : class
+    {
+        public T1 successResponse { get; set; }
+        public T2 errorResponse { get; set; }
     }
 }
