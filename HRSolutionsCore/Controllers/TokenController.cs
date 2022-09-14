@@ -40,7 +40,7 @@ namespace HRSolutionsCore.Controllers
             var validationResult = await validator.ValidateAsync(model);
             if (!validationResult.IsValid)
             {
-                return BadRequest(new AddUpdateDeleteResponse { Message = validationResult.Errors[0].ErrorMessage });
+                return BadRequest(new addUpdateDeleteResponse { Message = validationResult.Errors[0].ErrorMessage });
             }
             var response = _tokenBussiness.adminLogin(model);
             if (response.Success)

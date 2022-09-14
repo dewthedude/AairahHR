@@ -35,10 +35,10 @@ namespace HRSolutionsCore.Controllers
                 var validationResult = await validator.ValidateAsync(req);
                 if (!validationResult.IsValid)
                 {
-                    return BadRequest(new ErrorResponseModel { error = new ErrorModel { code = "400", message = "Validation error", innerError = validationResult.Errors.Select(z => z.ErrorMessage) } });
+                    return BadRequest(new errorResponseModel { error = new errorModel { code = "400", message = "Validation error", innerError = validationResult.Errors.Select(z => z.ErrorMessage) } });
                 }
                 var response = _masterBusiness.AddCategory(req);
-                if (response.Success == true)
+                if (response.successResponse.Success == true)
                 {
                     return Ok(response);
                 }
@@ -56,7 +56,7 @@ namespace HRSolutionsCore.Controllers
             try
             {
                 var response = _masterBusiness.GetCategory();
-                if (response.Success)
+                if (response.successResponse.Success)
                 {
                     return Ok(response);
                 }
@@ -76,10 +76,10 @@ namespace HRSolutionsCore.Controllers
             var validationResult = await validator.ValidateAsync(req);
             if (!validationResult.IsValid)
             {
-                return BadRequest(new ErrorResponseModel { error = new ErrorModel { code = "400", message = "Validation error", innerError = validationResult.Errors.Select(z => z.ErrorMessage) } });
+                return BadRequest(new errorResponseModel { error = new errorModel { code = "400", message = "Validation error", innerError = validationResult.Errors.Select(z => z.ErrorMessage) } });
             }
             var response = _masterBusiness.ChangeCategoryStatus(req);
-            if (response.Success)
+            if (response.successResponse.Success)
             {
                 return Ok(response);
             }
@@ -97,7 +97,7 @@ namespace HRSolutionsCore.Controllers
                     return BadRequest("Id is required");
                 }
                 var response = _masterBusiness.DeleteCategory(id);
-                if (response.Success == true)
+                if (response.successResponse.Success)
                 {
                     return Ok(response);
                 }
@@ -122,10 +122,10 @@ namespace HRSolutionsCore.Controllers
                 var validationResult = await validator.ValidateAsync(req);
                 if (!validationResult.IsValid)
                 {
-                    return BadRequest(new ErrorResponseModel { error = new ErrorModel { code = "400", message = "Validation error", innerError = validationResult.Errors.Select(z => z.ErrorMessage) } });
+                    return BadRequest(new errorResponseModel { error = new errorModel { code = "400", message = "Validation error", innerError = validationResult.Errors.Select(z => z.ErrorMessage) } });
                 }
                 var response = _masterBusiness.AddSubCategory(req);
-                if (response.Success == true)
+                if (response.successResponse.Success)
                 {
                     return Ok(response);
                 }
@@ -143,7 +143,7 @@ namespace HRSolutionsCore.Controllers
             try
             {
                 var response = _masterBusiness.GetSubCategory();
-                if (response.Success)
+                if (response.successResponse.Success)
                 {
                     return Ok(response);
                 }
@@ -161,7 +161,7 @@ namespace HRSolutionsCore.Controllers
             try
             {
                 var response = _masterBusiness.GetActiveCategory();
-                if (response.Success)
+                if (response.successResponse.Success)
                 {
                     return Ok(response);
                 }
@@ -181,10 +181,10 @@ namespace HRSolutionsCore.Controllers
             var validationResult = await validator.ValidateAsync(req);
             if (!validationResult.IsValid)
             {
-                return BadRequest(new ErrorResponseModel { error = new ErrorModel { code = "400", message = "Validation error", innerError = validationResult.Errors.Select(z => z.ErrorMessage) } });
+                return BadRequest(new errorResponseModel { error = new errorModel { code = "400", message = "Validation error", innerError = validationResult.Errors.Select(z => z.ErrorMessage) } });
             }
             var response = _masterBusiness.ActivateSubCategory(req);
-            if (response.Success)
+            if (response.successResponse.Success)
             {
                 return Ok(response);
             }
@@ -194,7 +194,6 @@ namespace HRSolutionsCore.Controllers
         [Route("SubCategory")]
         public IActionResult DeleteSubCategory(int id)
         {
-
             try
             {
                 if (id == 0)
@@ -202,7 +201,7 @@ namespace HRSolutionsCore.Controllers
                     return BadRequest("Id is required");
                 }
                 var response = _masterBusiness.DeleteSubCategory(id);
-                if (response.Success == true)
+                if (response.successResponse.Success)
                 {
                     return Ok(response);
                 }
