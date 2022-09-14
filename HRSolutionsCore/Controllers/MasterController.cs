@@ -11,7 +11,7 @@ namespace HRSolutionsCore.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class MasterController : ControllerBase
     {
         //New Chages fffff
@@ -89,7 +89,7 @@ namespace HRSolutionsCore.Controllers
         [Route("Category")]
         public IActionResult DeleteCategory(int id)
         {
-     
+
             try
             {
                 if (id == 0)
@@ -189,6 +189,29 @@ namespace HRSolutionsCore.Controllers
                 return Ok(response);
             }
             return Ok();
+        }
+        [HttpDelete]
+        [Route("SubCategory")]
+        public IActionResult DeleteSubCategory(int id)
+        {
+
+            try
+            {
+                if (id == 0)
+                {
+                    return BadRequest("Id is required");
+                }
+                var response = _masterBusiness.DeleteSubCategory(id);
+                if (response.Success == true)
+                {
+                    return Ok(response);
+                }
+                return BadRequest(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         #endregion
     }

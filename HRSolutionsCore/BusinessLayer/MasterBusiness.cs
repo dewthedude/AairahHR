@@ -121,7 +121,20 @@ namespace HRSolutions.BusinessLayer
         //getting list of all category
         public AddUpdateDeleteResponse GetSubCategory()
         {
-            var subCatDetails = _dataContext.MstCategories.Include("MstSubCategory").ToList();
+            var subCatDetails = (from t1 in _dataContext.MstCategories
+                                 join
+                                 t2 in _dataContext.MstSubCategories
+                                 on t1.Id equals t2.IdCategory
+                                 select new
+                                 {
+                                     catName = t1.Name,
+                                     subCatName = t2.Name,
+                                     Id = t2.Id,
+                                     Status = t2.Status,
+                                     AddBy = t2.AddBy,
+                                     CreatedDate = t2.CreatedDate,
+                                     UpdateDate = t2.UpdateDate,
+                                 }).ToList();
 
             if (subCatDetails.Count > 0)
             {
@@ -164,6 +177,22 @@ namespace HRSolutions.BusinessLayer
                 }
             }
             return new AddUpdateDeleteResponse { Data = "", Message = "Failed to update status", Success = true };
+        }
+        public AddUpdateDeleteResponse DeleteSubCategory(int id)
+        {
+            var subCatDetails = _dataContext.MstSubCategories.First(x => x.Id == id);
+            bool isUsed = _dataContext.MstSubSubCategories.Any(x => x.IdSubCategory == id);
+            if (isUsed)
+            {
+                return new AddUpdateDeleteResponse { Data = "", Success = false, Message = subCatDetails.Name + " having a sub_categoyr name please remove it first " };
+            }
+            if (subCatDetails != null)
+            {
+                _dataContext.MstSubCategories.Remove(subCatDetails);
+                _dataContext.SaveChanges();
+                return new AddUpdateDeleteResponse { Data = "", Message = "sub category remove successfully", Success = true };
+            }
+            return new AddUpdateDeleteResponse { Data = "", Message = "failed to remove subcategory", Success = false };
         }
     }
 }

@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\HRSolutionsCore"
+    "\\HRSolutionsCore",
+    "\\HRSolutionsCore\\Controllers"
   ],
-  "SelectedNode": "\\HRSolutionsCore\\Program.cs",
+  "SelectedNode": "\\HRSolutionsCore.sln",
   "PreviewInSolutionExplorer": false
 }
