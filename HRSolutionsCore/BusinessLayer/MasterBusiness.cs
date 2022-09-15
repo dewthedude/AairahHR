@@ -48,7 +48,7 @@ namespace HRSolutions.BusinessLayer
             var CatList = _dataContext.MstCategories.ToList();
             if (CatList != null)
             {
-                return new responseModel<addUpdateDeleteResponse, errorResponseModel> { successResponse = new addUpdateDeleteResponse { Data = "", Message = "Data found successfully", Success = true } };
+                return new responseModel<addUpdateDeleteResponse, errorResponseModel> { successResponse = new addUpdateDeleteResponse { Data = CatList, Message = "Data found successfully", Success = true } };
             }
             return new responseModel<addUpdateDeleteResponse, errorResponseModel> { errorResponse = new errorResponseModel { error = new errorModel { code = "400", message = "Data not found", Success = false } } };
         }

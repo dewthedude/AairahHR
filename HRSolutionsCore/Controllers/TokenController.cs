@@ -35,25 +35,24 @@ namespace HRSolutionsCore.Controllers
         public async Task<IActionResult> adminLogin([FromBody] AdminLoginReqModel model)
         {
             //Validating request body
-
             var validator = new AdminLoginReqModelValidator();
             var validationResult = await validator.ValidateAsync(model);
             if (!validationResult.IsValid)
             {
-                return BadRequest(new addUpdateDeleteResponse { Message = validationResult.Errors[0].ErrorMessage });
+                return BadRequest(new responseModel<addUpdateDeleteResponse, errorResponseModel> { errorResponse = new errorResponseModel { error = new errorModel { message = validationResult.Errors[0].ErrorMessage } } });
             }
             var response = _tokenBussiness.adminLogin(model);
-            if (response.Success)
+            if (response.successResponse != null)
             {
-                return Ok(response);
+                return Ok(response.successResponse);
             }
-            if (response.Message.Contains("not registered"))
+            if (response.errorResponse.error.message.Contains("not registered"))
             {
-                return BadRequest(response.Message);
+                return BadRequest(response.errorResponse);
             }
-            if (response.Message.Contains("Invalid"))
+            if (response.errorResponse.error.message.Contains("Invalid"))
             {
-                return BadRequest(response.Message);
+                return BadRequest(response.errorResponse);
             }
             return Unauthorized();
         }
