@@ -30,15 +30,14 @@ namespace HRSolutionsCore.Controllers
             try
             {
                 //Validating request body
-
                 var validator = new MasterCategoryValidator();
                 var validationResult = await validator.ValidateAsync(req);
                 if (!validationResult.IsValid)
                 {
-                    return BadRequest(new errorResponseModel { error = new errorModel { code = "400", message = "Validation error", innerError = validationResult.Errors.Select(z => z.ErrorMessage) } });
+                    return BadRequest(new responseModel<addUpdateDeleteResponse, errorResponseModel> { errorResponse = new errorResponseModel { error = new errorModel { code = "400", message = "Validation error", innerError = validationResult.Errors.Select(z => z.ErrorMessage) } } });
                 }
                 var response = _masterBusiness.AddCategory(req);
-                if (response.successResponse.Success == true)
+                if (response.successResponse != null)
                 {
                     return Ok(response);
                 }
@@ -79,11 +78,11 @@ namespace HRSolutionsCore.Controllers
                 return BadRequest(new errorResponseModel { error = new errorModel { code = "400", message = "Validation error", innerError = validationResult.Errors.Select(z => z.ErrorMessage) } });
             }
             var response = _masterBusiness.ChangeCategoryStatus(req);
-            if (response.successResponse.Success)
+            if (response.successResponse != null)
             {
                 return Ok(response);
             }
-            return Ok();
+            return BadRequest(response.errorResponse);
         }
         [HttpDelete]
         [Route("Category")]
@@ -97,11 +96,11 @@ namespace HRSolutionsCore.Controllers
                     return BadRequest("Id is required");
                 }
                 var response = _masterBusiness.DeleteCategory(id);
-                if (response.successResponse.Success)
+                if (response.successResponse != null)
                 {
-                    return Ok(response);
+                    return Ok(response.successResponse);
                 }
-                return BadRequest(response);
+                return BadRequest(response.errorResponse);
             }
             catch (Exception ex)
             {
@@ -143,11 +142,11 @@ namespace HRSolutionsCore.Controllers
             try
             {
                 var response = _masterBusiness.GetSubCategory();
-                if (response.successResponse.Success)
+                if (response.successResponse != null)
                 {
-                    return Ok(response);
+                    return Ok(response.successResponse);
                 }
-                return BadRequest(response);
+                return BadRequest(response.errorResponse);
             }
             catch (Exception ex)
             {
@@ -161,7 +160,7 @@ namespace HRSolutionsCore.Controllers
             try
             {
                 var response = _masterBusiness.GetActiveCategory();
-                if (response.successResponse.Success)
+                if (response.successResponse != null)
                 {
                     return Ok(response);
                 }
@@ -184,11 +183,11 @@ namespace HRSolutionsCore.Controllers
                 return BadRequest(new errorResponseModel { error = new errorModel { code = "400", message = "Validation error", innerError = validationResult.Errors.Select(z => z.ErrorMessage) } });
             }
             var response = _masterBusiness.ActivateSubCategory(req);
-            if (response.successResponse.Success)
+            if (response.successResponse != null)
             {
-                return Ok(response);
+                return Ok(response.successResponse);
             }
-            return Ok();
+            return BadRequest(response.errorResponse);
         }
         [HttpDelete]
         [Route("SubCategory")]
@@ -201,11 +200,11 @@ namespace HRSolutionsCore.Controllers
                     return BadRequest("Id is required");
                 }
                 var response = _masterBusiness.DeleteSubCategory(id);
-                if (response.successResponse.Success)
+                if (response.successResponse != null)
                 {
-                    return Ok(response);
+                    return Ok(response.successResponse);
                 }
-                return BadRequest(response);
+                return BadRequest(response.errorResponse);
             }
             catch (Exception ex)
             {

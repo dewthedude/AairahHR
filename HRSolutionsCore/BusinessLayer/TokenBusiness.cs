@@ -28,18 +28,12 @@ namespace HRSolutionsCore.BusinessLayer
             _configuration = configuration;
             _context = context;
         }
-        public addUpdateDeleteResponse adminLogin(AdminLoginReqModel request)
+        public responseModel<addUpdateDeleteResponse, errorResponseModel> adminLogin(AdminLoginReqModel request)
         {
-            //var user = new
-            //{
-            //    username = "AshuKhan",
-            //    password = "12345",
-            //    Role = "Admin",
-            //};
             bool isUserExist = _context.AdminRegistrations.Any(x => x.Email == request.UserName || x.Mobile == request.UserName);
             if (!isUserExist)
             {
-                return new addUpdateDeleteResponse { Data = "", Message = "Email or Mobile is not registered", Success = false };
+                return new responseModel<addUpdateDeleteResponse, errorResponseModel> { errorResponse = new errorResponseModel { error = new errorModel { code = "", message = "Email or Mobile is not registered", Success = false } } };
             }
             var user = _context.AdminRegistrations.FirstOrDefault(x => x.Email == request.UserName && x.Password == request.Password || x.Mobile == request.UserName && x.Password == request.Password);
 
@@ -53,18 +47,21 @@ namespace HRSolutionsCore.BusinessLayer
                 };
                 authClaims.Add(new Claim(ClaimTypes.Role, "Admin"));
                 var token = GetToken(authClaims);
-                return new addUpdateDeleteResponse
+                return new responseModel<addUpdateDeleteResponse, errorResponseModel>
                 {
-                    Message = "",
-                    Data = new
+                    successResponse = new addUpdateDeleteResponse
                     {
-                        token = new JwtSecurityTokenHandler().WriteToken(token),
-                        expiration = token.ValidTo
-                    },
-                    Success = true
+                        Message = "",
+                        Data = new
+                        {
+                            token = new JwtSecurityTokenHandler().WriteToken(token),
+                            expiration = token.ValidTo
+                        },
+                        Success = true
+                    }
                 };
             }
-            return new addUpdateDeleteResponse { Data = "", Message = "Invalid Password", Success = false };
+            return new responseModel<addUpdateDeleteResponse, errorResponseModel> { errorResponse = new errorResponseModel { error = new errorModel { code = "400", message = "Invalid Password", Success = false } } };
         }
         private JwtSecurityToken GetToken(List<Claim> authClaims)
         {
