@@ -3,7 +3,7 @@ using HRSolutionsCore.Models;
 using HRSolutionsCore.RequestModel;
 using Microsoft.EntityFrameworkCore;
 
-namespace HRSolutions.BusinessLayer
+namespace HRSolutionsCore.BusinessLayer
 {
     //public interface IMasterBusiness
     //{
@@ -14,7 +14,7 @@ namespace HRSolutions.BusinessLayer
         private readonly HRManagementDbContext _dataContext;
         public MasterBusiness(HRManagementDbContext dataContext)
         {
-            this._dataContext = dataContext;
+            _dataContext = dataContext;
         }
         #region Category
         public responseModel<addUpdateDeleteResponse, errorResponseModel> AddCategory(MasterCategoryModel req)
@@ -131,11 +131,11 @@ namespace HRSolutions.BusinessLayer
                                  {
                                      catName = t1.Name,
                                      subCatName = t2.Name,
-                                     Id = t2.Id,
-                                     Status = t2.Status,
-                                     AddBy = t2.AddBy,
-                                     CreatedDate = t2.CreatedDate,
-                                     UpdateDate = t2.UpdateDate,
+                                     t2.Id,
+                                     t2.Status,
+                                     t2.AddBy,
+                                     t2.CreatedDate,
+                                     t2.UpdateDate,
                                  }).ToList();
 
             if (subCatDetails.Count > 0)
@@ -154,7 +154,7 @@ namespace HRSolutions.BusinessLayer
             }
             return new responseModel<addUpdateDeleteResponse, errorResponseModel> { errorResponse = new errorResponseModel { error = new errorModel { message = "active categories not found", code = "400", Success = false } } };
         }
-        public responseModel<addUpdateDeleteResponse,errorResponseModel> ActivateSubCategory(SubCategoryStatusModel req)
+        public responseModel<addUpdateDeleteResponse, errorResponseModel> ActivateSubCategory(SubCategoryStatusModel req)
         {
             var subCatDetails = _dataContext.MstSubCategories.FirstOrDefault(x => x.Id == req.id);
             if (subCatDetails != null)
@@ -173,12 +173,12 @@ namespace HRSolutions.BusinessLayer
                 i = _dataContext.SaveChanges();
                 if (i > 0)
                 {
-                    return new responseModel<addUpdateDeleteResponse, errorResponseModel> {successResponse = new addUpdateDeleteResponse { Data = "", Message = subCatDetails.Name + ": status updated successfully", Success = true } };
+                    return new responseModel<addUpdateDeleteResponse, errorResponseModel> { successResponse = new addUpdateDeleteResponse { Data = "", Message = subCatDetails.Name + ": status updated successfully", Success = true } };
                 }
             }
             return new responseModel<addUpdateDeleteResponse, errorResponseModel> { errorResponse = new errorResponseModel { error = new errorModel { code = "400", message = "Failed to update status", Success = false } } };
         }
-        public responseModel<addUpdateDeleteResponse,errorResponseModel> DeleteSubCategory(int id)
+        public responseModel<addUpdateDeleteResponse, errorResponseModel> DeleteSubCategory(int id)
         {
             var subCatDetails = _dataContext.MstSubCategories.First(x => x.Id == id);
             bool isUsed = _dataContext.MstSubSubCategories.Any(x => x.IdSubCategory == id);

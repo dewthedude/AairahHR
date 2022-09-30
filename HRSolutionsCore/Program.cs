@@ -1,5 +1,3 @@
-
-using HRSolutions.BusinessLayer;
 using HRSolutionsCore.BusinessLayer;
 using HRSolutionsCore.Models;
 using HRSolutionsCore.ResponseModel;

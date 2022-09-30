@@ -1,4 +1,4 @@
-﻿using HRSolutions.BusinessLayer;
+﻿using HRSolutionsCore.BusinessLayer;
 using HRSolutionsCore.RequestModel;
 using HRSolutionsCore.ResponseModel;
 using Microsoft.AspNetCore.Authorization;
